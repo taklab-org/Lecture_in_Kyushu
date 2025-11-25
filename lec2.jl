@@ -44,7 +44,7 @@ ix = interval(x_bar)
 A_dagger = DF(ix); A = 1/A_dagger
 
 # Y0 bound
-Y0 = abs(A*F(x_bar))
+Y0 = abs(A*F(ix))
 @show Y0
 
 # Z0, Z1
@@ -75,7 +75,7 @@ end
 
 # Plot radii polynomial
 using Plots
-midp(r) = mid(p(r))
+midp(r) = mid.(p(r))
 plot(midp,-0.1,2,xlabel="r",ylabel="p(r)",legend=false)
 # ==
 
@@ -86,7 +86,8 @@ plot(midp,-0.1,2,xlabel="r",ylabel="p(r)",legend=false)
 ######################
 using Plots
 # λ = 4.215351654086267
-λ = 1.2
+# λ = 1.2
+λ = 3.5
 P(x) = λ*x*(1-x)
 
 length_x = 49
@@ -125,7 +126,7 @@ plot(plt,xlabel="λ",ylabel="xₙ",size=(600,300))
 # ==
 
 
-λ = 3.8284
+λ = 3.8285
 P(x) = λ*x*(1-x)
 length_x = 200
 x = zeros(length_x)
@@ -146,7 +147,7 @@ DF(x) = [1 0 -λ*(1-2x[3]);
     0 -λ*(1-2x[2]) 1]
 
 x0 = [1., -1., 1.]
-# x₀ = [.5, 1.0, 0.1]
+# x0 = [.5, 1.0, 0.1]
 
 x_bar = newton_F(x0)
 @show x_bar
@@ -216,6 +217,7 @@ DF((lam, x1, x2, x3)) = [0 1 1 1;
     -x2*(1-x2) 0 -lam*(1-2*x2) 1]
 
 x0  = [3.0,1.0,-1.0,1.0]
+# x0 = randn(4)
 x_bar = newton_F(x0)
 @show x_bar
 # ==
@@ -223,7 +225,7 @@ x_bar = newton_F(x0)
 
 # Define A and A_dagger
 using IntervalArithmetic
-ix = interval.(x_bar)
+ix = interval(x_bar)
 A_dagger = DF(ix)
 A = interval(inv(mid.(A_dagger)))
 
