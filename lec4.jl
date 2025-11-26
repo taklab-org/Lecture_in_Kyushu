@@ -24,3 +24,50 @@ include("FourierChebyshev.jl")
 #f(x)の概形
 f(x) = exp(sin(5x))/(1+sin(cos(x)))
 plot(f,0,2π,size=(800,400),legend=false,xlabel="\$x\$", ylabel="\$f(x)\$")
+
+g(x) = f(x)^2
+plot(g,0,2π,size=(800,400),xlabel="\$x\$", ylabel="\$f(x)^2\$",label = "Julia")
+
+
+#######################
+# naive FFT Algorithm
+#######################
+M = 70
+a = fouriercoeffs(f,M)
+p = 2
+N = (p-1)*M
+ta = [zeros(N);a;zeros(N)] # 1. Padding zeros
+tb = ifft(ifftshift(ta)) # 2. IFFT of ta
+tbp = tb.^p # 3. tb*^tb
+tc = fftshift(fft(tbp))*(2.0*p*M-1)^(p-1) # 4. FFT of tb2 
+plot_fourier!(tc[p:end-(p-1)],label="FFT algorithm")
+
+
+# ==
+
+using SpecialFunctions
+f(x) = erf(sin(3x)+cos(2x))^4
+plot(f, 0, 2π, legend=false, size=(800,400))
+
+M = 150
+p = 5
+# f(x) = erf(sin(3x)+cos(2x))^4
+g(x) = f(x)^p
+plot(g,0,2π,size=(800,400),legend=false,xlabel="\$x\$", ylabel="\$f(x)^{$(p)}\$")
+
+a = fouriercoeffs(f,M) # size(a) = 2M-1
+# plot(abs.(a),yscale=:log10,)
+function powerconvfourier(a::Vector{Complex{T}},p) where T
+    M = Int((length(a)+1)/2)
+    N = (p-1)*M
+    ta = [zeros(N);a;zeros(N)] # 1. Padding zeros: size(ta) = 2pM-1
+    tb = ifft(ifftshift(ta)) # 2. IFFT of ta
+    tbᵖ = tb.^p # 3. tb*^tb
+    cᵖ = fftshift(fft(tbᵖ))*(2.0*p*M-1)^(p-1)
+    return cᵖ[N+1:end-N], cᵖ[p:end-(p-1)]# return (truncated, full) version
+end
+
+ap, ap_full = powerconvfourier(a,p)
+plot_fourier!(ap_full)
+
+plot_fouriercoeffs(ap_full)
