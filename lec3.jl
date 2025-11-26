@@ -14,7 +14,8 @@ plot(f,0,2π,lw=1.6,legend=false,
 
 # ==
 # setprecision(104)
-N = 100
+# using ApproxFun
+N = 50
 
 function fouriercoeffs(f,N)
     h = (2.0)*π/(2N-1)
@@ -140,7 +141,7 @@ zz =exp.(im*tt)
 plot(zz,
     title = "Equispaced  points on the unit circle",
     legend = false,
-    size = (800,400),
+    size = (700,400),
 )
 scatter!(zz)
 
@@ -182,6 +183,8 @@ plot(f,-1,1,
 xj = chebpts(n)
 fvals = f.(xj)
 scatter!(xj,fvals)
+# scatter(xj,fvals)
+
 
 # ==
 
