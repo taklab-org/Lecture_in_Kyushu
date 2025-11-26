@@ -29,8 +29,8 @@ function plot_fourier(bc, I=[0,2π])
     N_pad = N + n_pad
     h_pad = (b-a)/(2N_pad-1)
     xj_pad = a .+ h_pad*(0:2N_pad-2)
-　　fNj_pad = real((2N_pad-1)*ifft(ifftshift(bc_pad)))
-　　plot(xj_pad, fNj_pad, legend=false, xlabel = "\$x\$", ylabel = "\$f(x)\$")
+    fNj_pad = real((2N_pad-1)*ifft(ifftshift(bc_pad)))
+    plot(xj_pad, fNj_pad, legend=false, xlabel = "\$x\$", ylabel = "\$f(x)\$")
 end
 
 function plot_fourier!(bc, I=[0,2π];label="")
@@ -42,8 +42,8 @@ function plot_fourier!(bc, I=[0,2π];label="")
     N_pad = N + n_pad
     h_pad = (b-a)/(2N_pad-1)
     xj_pad = a .+ h_pad*(0:2N_pad-2)
-　　fNj_pad = real((2N_pad-1)*ifft(ifftshift(bc_pad)))
-　　plot!(xj_pad, fNj_pad, label=label)
+    fNj_pad = real((2N_pad-1)*ifft(ifftshift(bc_pad)))
+    plot!(xj_pad, fNj_pad, label=label)
 end
 
 function plot_fouriercoeffs(bc)

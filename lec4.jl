@@ -19,7 +19,9 @@ x = -1:0.125:1
 scatter!(x,f1.(x))
 # savefig("aliasing.pdf")
 
-# ==
+#######################
+# Fourier Series Convolution
+#######################
 include("FourierChebyshev.jl")
 #f(x)の概形
 f(x) = exp(sin(5x))/(1+sin(cos(x)))
@@ -44,7 +46,6 @@ plot_fourier!(tc[p:end-(p-1)],label="FFT algorithm")
 
 
 # ==
-
 using SpecialFunctions
 f(x) = erf(sin(3x)+cos(2x))^4
 plot(f, 0, 2π, legend=false, size=(800,400))
@@ -71,3 +72,17 @@ ap, ap_full = powerconvfourier(a,p)
 plot_fourier!(ap_full)
 
 plot_fouriercoeffs(ap_full)
+
+# ==
+f(x) = exp(-(100*(x-0.5)^2))
+a = cheb(f) # Two-sided
+
+using RadiiPolynomial
+a_cheb = Sequence(Chebyshev(length(a)-1),[a[1];0.5*a[2:end]])
+# space(a_cheb)
+# plot(x -> a_cheb(x),-1,1)
+a_cheb_ext = project(a_cheb,Chebyshev(500))
+
+ap = (a_cheb_ext)^(0.4)
+# plot(x->ap(x),-1,1)
+plot(abs.((ap[:])),yscale=:log10)
